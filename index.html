@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shade Player Token Üretici</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Monomaniac+One&display=swap" rel="stylesheet">
+  <style>
+    .token-container {
+      margin-top: 80px;
+      align-items: center;
+      text-align: center;
+    }
+
+    body {
+      background-color: rgb(21, 21, 21);
+    }
+
+    .token-input {
+      width: 600px;
+      height: 300px;
+      margin-bottom: 0px;
+      border-radius: 30px;
+      border-color: aliceblue;
+      font-family: 'Monomaniac One', sans-serif;
+      background-color: rgb(21, 21, 21);
+      color: aliceblue;
+      justify-content: center;
+      display: block;
+      margin: 0 auto;
+      resize: none;
+      font-size: 20px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      padding-top: 15px;
+    }
+
+    .button {
+      padding: 12px;
+      margin:  5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      width: 295px;
+      border-radius: 30px;
+      font-family: 'Monomaniac One', sans-serif;
+      font-size: 22px;
+    }
+    .button:hover {
+      display: flex;
+      justify-content: center;
+      background-color: #e2e2e2;
+      color: #1f1f1f;
+    }
+
+    .notification {
+      position: fixed;
+      font-size: 20px;
+      top: 20px;
+      right: 20px;
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      z-index: 9999;
+      border-style: solid;
+      font-family: 'Monomaniac One', sans-serif;
+      border-color: #00ac06;
+    }
+
+    .notification .close-button {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+    }
+  </style>
+</head>
+<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+<center>
+  <div class="token-container">
+    <h1 style="font-family: 'Monomaniac One', sans-serif; color: rgb(226, 226, 226); font-size: 32px;">Shade Player Token Üretici</h1>
+    <textarea id="tokenInput" class="token-input" rows="10" readonly></textarea>
+    <div class="button-container">
+      <button id="generateButton" class="button">Token Üret</button>
+      <button id="copyButton" class="button">Kopyala</button>
+    </div>
+  </div>
+</center>
+
+<div id="notificationContainer" class="notification" style="display: none;">
+  <span id="notificationMessage"></span>
+  <span class="close-button">&times;</span>
+</div>
+
+<script>
+  function generateToken() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%&><-.,~^#/()[?*_]';
+    const tokenLength = 500;
+    const exclamationMarkCount = 20;
+
+    let token = '';
+
+    const exclamationMarkIndexes = [];
+    while (exclamationMarkIndexes.length < exclamationMarkCount) {
+      const randomIndex = Math.floor(Math.random() * tokenLength);
+      if (!exclamationMarkIndexes.includes(randomIndex)) {
+        exclamationMarkIndexes.push(randomIndex);
+      }
+    }
+
+    for (let i = 0; i < tokenLength; i++) {
+      if (exclamationMarkIndexes.includes(i)) {
+        token += '!';
+      } else {
+        const randomChar = characters.charAt(Math.floor(Math.random() * characters.length));
+        token += randomChar;
+      }
+    }
+
+    return token;
+  }
+
+  document.getElementById('generateButton').addEventListener('click', function() {
+    const generatedToken = generateToken();
+    document.getElementById('tokenInput').value = generatedToken;
+  });
+
+  document.getElementById('copyButton').addEventListener('click', function() {
+    const tokenInput = document.getElementById('tokenInput');
+    tokenInput.select();
+    tokenInput.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+
+    const notificationContainer = document.getElementById('notificationContainer');
+    const notificationMessage = document.getElementById('notificationMessage');
+    notificationMessage.innerText = 'Token başarıyla kopyalandı!';
+    notificationContainer.style.display = 'block';
+
+    const closeNotification = document.querySelector('.close-button');
+    closeNotification.addEventListener('click', function() {
+      notificationContainer.style.display = 'none';
+    });
+  });
+</script>
+</body>
+</html>
