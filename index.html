@@ -86,7 +86,6 @@
     <h1 style="font-family: 'Monomaniac One', sans-serif; color: rgb(226, 226, 226); font-size: 32px;">Shade Player Token Üretici</h1>
     <textarea id="tokenInput" class="token-input" rows="10" readonly></textarea>
     <div class="button-container">
-      <button id="generateButton" class="button">Token Üret</button>
       <button id="copyButton" class="button">Kopyala</button>
     </div>
   </div>
@@ -125,7 +124,7 @@
     return token;
   }
 
-  document.getElementById('generateButton').addEventListener('click', function() {
+  window.addEventListener('DOMContentLoaded', function() {
     const generatedToken = generateToken();
     document.getElementById('tokenInput').value = generatedToken;
   });
